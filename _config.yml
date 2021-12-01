@@ -17,6 +17,7 @@ title: Bandon 2022
 #description: A Jekyll theme for documentation
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://bandonbrawl22.com" # the base hostname & protocol for your site, e.g. http://example.com
+version: 0.1.0
 
 permalink: pretty
 exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile"

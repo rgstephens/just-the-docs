@@ -1,13 +1,24 @@
-FROM ruby:2.6
+FROM ruby:2.7.1
 
-ENV LC_ALL C.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
-WORKDIR /usr/src/app
+ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-COPY Gemfile just-the-docs.gemspec ./
-RUN gem install bundler && bundle install
+RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
+    nodejs \
+    yarn \
+    git \
+    emacs \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 4000
+RUN mkdir -p /app
+COPY . /app 
+WORKDIR /app
 
+RUN yarn install
+RUN bundle install
+
+CMD [ "bundle", "exec", "jekyll", "serve", "-H", "0.0.0.0", "-P", "80" ]
